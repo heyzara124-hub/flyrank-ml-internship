@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Gap Between Position and Clicks — FlyRank ML Internship Capstone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f3ec;
+    --paper-warm: #efe9db;
+    --ink: #1f2a24;
+    --ink-soft: #4a544c;
+    --line: #d9d2bf;
+    --gold: #a9752f;
+    --gold-deep: #7c5420;
+    --moss: #4b6154;
+    --moss-pale: #dfe6dd;
+    --white: #fffdf8;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ---------- Header / masthead ---------- */
+  .masthead {
+    border-bottom: 1px solid var(--line);
+    padding: 56px 0 40px;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 22px;
+    height: 1px;
+    background: var(--gold-deep);
+    display: inline-block;
+  }
+
+  h1.title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(34px, 5vw, 50px);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin: 0 0 18px;
+    color: var(--ink);
+  }
+
+  .subtitle {
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+    font-size: 19px;
+    color: var(--ink-soft);
+    margin: 0 0 28px;
+    max-width: 56ch;
+  }
+
+  .byline {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--ink-soft);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 22px;
+  }
+  .byline a { color: var(--gold-deep); }
+
+  /* ---------- Position ladder signature element ---------- */
+  .ladder {
+    margin: 34px 0 4px;
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 64px;
+  }
+  .ladder .rung {
+    flex: 1;
+    background: linear-gradient(180deg, var(--moss) 0%, var(--moss-pale) 100%);
+    border-radius: 2px 2px 0 0;
+    position: relative;
+    opacity: 0.85;
+  }
+  .ladder .rung.gap { background: linear-gradient(180deg, var(--gold) 0%, #eddcb8 100%); opacity: 1; }
+  .ladder-caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+
+  /* ---------- Abstract ---------- */
+  .abstract {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--gold);
+    padding: 26px 30px;
+    margin: 40px 0;
+    font-size: 16.5px;
+    color: var(--ink-soft);
+  }
+  .abstract .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  /* ---------- Sections ---------- */
+  section { padding: 46px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: none; }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .section-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--gold-deep);
+    background: var(--moss-pale);
+    border-radius: 3px;
+    padding: 3px 8px;
+  }
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 27px;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  p { margin: 0 0 16px; }
+  strong { color: var(--ink); }
+
+  ul, ol { padding-left: 22px; margin: 0 0 16px; }
+  li { margin-bottom: 8px; }
+
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--paper-warm);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 0.86em;
+    color: var(--gold-deep);
+  }
+
+  a { color: var(--moss); text-decoration-color: var(--line); text-underline-offset: 3px; }
+  a:hover { color: var(--gold-deep); }
+
+  /* ---------- Stat row ---------- */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px;
+    margin: 22px 0 28px;
+  }
+  .stat {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 18px 16px;
+  }
+  .stat .num {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 30px;
+    color: var(--moss);
+    line-height: 1;
+  }
+  .stat .num.gold { color: var(--gold-deep); }
+  .stat .lbl {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ---------- Chart cards ---------- */
+  .chart-card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 18px;
+    margin: 24px 0;
+  }
+  .chart-card img { width: 100%; height: auto; display: block; }
+  .chart-caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--line);
+  }
+
+  /* ---------- Comparison table ---------- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 15.5px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  th, td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  thead th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: var(--paper-warm);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  td.win { color: var(--moss); font-weight: 600; }
+  tr.model-row td { background: #fbf8ef; }
+
+  /* ---------- Limitations list ---------- */
+  .limit-list { list-style: none; padding: 0; }
+  .limit-list li {
+    padding-left: 26px;
+    position: relative;
+    margin-bottom: 12px;
+    color: var(--ink-soft);
+  }
+  .limit-list li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+  }
+  .limit-list li strong { color: var(--ink); }
+
+  .callout {
+    background: var(--moss-pale);
+    border-radius: 6px;
+    padding: 16px 20px;
+    font-size: 15.5px;
+    color: #2e3d33;
+    margin: 20px 0;
+  }
+
+  /* ---------- Reproducibility ---------- */
+  .repro-box {
+    background: var(--ink);
+    color: #e9e4d6;
+    border-radius: 8px;
+    padding: 22px 24px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.8;
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+  .repro-box .comment { color: #8b9a8c; }
+
+  .link-list { list-style: none; padding: 0; margin: 20px 0; }
+  .link-list li {
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--line);
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 15.5px;
+  }
+  .link-list a { font-weight: 600; }
+  .link-list span { color: var(--ink-soft); font-size: 14px; font-family: 'IBM Plex Mono', monospace; }
+
+  /* ---------- Footer / acknowledgments ---------- */
+  footer {
+    padding: 44px 0 70px;
+    text-align: center;
+  }
+  .ack-card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 30px;
+  }
+  .ack-card p { color: var(--ink-soft); font-size: 16px; margin-bottom: 6px; }
+  .ack-card a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    color: var(--gold-deep);
+  }
+
+  @media (max-width: 600px) {
+    body { font-size: 16.5px; }
+    .wrap { padding: 0 18px; }
+    .abstract, .chart-card, section { padding-left: 0; padding-right: 0; }
+    .abstract { padding: 22px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">FlyRank ML Internship — Capstone Research Paper</div>
+    <h1 class="title">The Gap Between Position and Clicks</h1>
+    <p class="subtitle">Ranking web pages by how far their click-through rate falls short of what their search position should earn — and testing whether a model can find them better than a rule can.</p>
+    <div class="byline">
+      <span>By Noor Zahra</span>
+      <a href="https://github.com/heyzara124-hub/flyrank-ml-internship" target="_blank">Repo &amp; notebooks →</a>
+    </div>
+
+    <div class="ladder-caption">POSITION TIER 1 &nbsp;→&nbsp; TIER 5 · GOLD = THE GAP THIS PAPER HUNTS FOR</div>
+    <div class="ladder">
+      <div class="rung" style="height:92%"></div>
+      <div class="rung gap" style="height:38%"></div>
+      <div class="rung" style="height:70%"></div>
+      <div class="rung" style="height:55%"></div>
+      <div class="rung gap" style="height:22%"></div>
+      <div class="rung" style="height:48%"></div>
+      <div class="rung" style="height:63%"></div>
+      <div class="rung gap" style="height:30%"></div>
+      <div class="rung" style="height:44%"></div>
+      <div class="rung" style="height:20%"></div>
+    </div>
+  </header>
+
+  <div class="abstract">
+    <span class="label">Abstract</span>
+    Search pages that rank in similar positions usually earn similar click-through rates, but
+    some fall well short of their peers, quietly losing traffic no one is watching for. This
+    paper scores every visible page in a 30,000-page FlyRank dataset by that gap, and compares
+    a Random Forest model against a transparent hand-written baseline rule at finding the pages
+    worth reviewing first. Using a client-holdout split to keep the test honest, the model's
+    top-50 picks matched the true worst-performing pages twice as often as the baseline rule's
+    did. The result is a ranked, reason-coded review queue — a starting point for a content
+    editor's next look, not a verdict on any single page.
+  </div>
+
+  <section id="problem">
+    <div class="section-head"><span class="section-num">01</span><h2>Problem framing</h2></div>
+    <p>
+      A content team can't manually review thousands of pages every week. Left unmanaged, the
+      pages quietly underperforming their search position stay invisible until traffic loss is
+      already severe. This work turns that blind spot into a short, ordered list: which pages
+      to open first, and a plain-language reason why each one made the cut.
+    </p>
+    <p>
+      <strong>Unit of analysis:</strong> one content page. <strong>Output:</strong> a rank and a
+      reason code. <strong>Action a human takes:</strong> review the page's title, snippet, or
+      freshness against the reason given, and decide whether to act. <strong>Cost of a wrong
+      call:</strong> low — this is a prioritized suggestion list, not an automated edit, so a
+      false positive costs a few minutes of review, not a broken page.
+    </p>
+  </section>
+
+  <section id="data">
+    <div class="section-head"><span class="section-num">02</span><h2>Data</h2></div>
+    <p>
+      This paper uses the anonymized starter release included with the FlyRank ML Internship:
+      a single trailing-90-day snapshot of <strong>30,000 content pages</strong> across
+      <strong>32 pseudonymized clients</strong>. No client names, domains, URLs, or raw exports
+      appear anywhere in this analysis.
+    </p>
+    <div class="stat-row">
+      <div class="stat"><div class="num">30,000</div><div class="lbl">TOTAL PAGES IN SNAPSHOT</div></div>
+      <div class="stat"><div class="num gold">12,023</div><div class="lbl">PAGES SCORED, AFTER FILTER</div></div>
+      <div class="stat"><div class="num">32</div><div class="lbl">PSEUDONYMIZED CLIENTS</div></div>
+    </div>
+    <p>
+      Only pages with <code>impressions_90d ≥ 500</code> and an average position between 1 and
+      20 are scored. Below that traffic floor, a click-through-rate comparison is mostly noise —
+      a page with ten impressions can swing from 0% to 30% CTR on a single click.
+    </p>
+    <p>
+      <strong>Columns deliberately excluded as model inputs:</strong> <code>ctr</code> and
+      <code>clicks_90d</code> (the ingredients of the label itself — using them would be
+      circular), <code>trend_direction</code> and <code>trend_pct</code> (flagged as leakage
+      risks in the internship's own data dictionary), and the client and content identifiers
+      (used only to keep test data separate from training data, never as a prediction input).
+    </p>
+  </section>
+
+  <section id="methodology">
+    <div class="section-head"><span class="section-num">03</span><h2>Methodology</h2></div>
+    <p>
+      <strong>Target:</strong> <code>ctr_gap</code> — a page's own click-through rate minus the
+      median click-through rate of other visible pages at the same position tier. It's built
+      entirely from observed clicks and impressions, not a hand-defined rule.
+    </p>
+    <p>
+      <strong>Baseline.</strong> A transparent rule: flag a page if its CTR sits under half its
+      position tier's median, and it has at least 500 impressions. Rank the flagged pages by
+      traffic volume. Simple, explainable, and the bar the model has to clear.
+    </p>
+    <p>
+      <strong>Model.</strong> A Random Forest Regressor predicting <code>ctr_gap</code> from
+      content and traffic signals: search volume, competition, word and character count,
+      content age, freshness, engagement rate, scroll rate, AI-referral traffic share, content
+      type, search intent, and position tier. Chosen over a linear model because these signals
+      interact — a stale page mostly matters if it also carries real traffic — and a tree
+      ensemble captures that without hand-built interaction terms.
+    </p>
+    <p>
+      <strong>Validation design.</strong> A client-holdout split: 80% of clients for training,
+      20% held out entirely, so no client's pages appear on both sides. Pages from the same
+      client often share templates and content strategy, so a random row-level split would let
+      the model partly memorize client style rather than learn something that generalizes to a
+      brand-new client.
+    </p>
+    <p>
+      <strong>Leakage audit.</strong> The final feature list was checked against every banned
+      column — confirmed clean. As a second check, the same model was re-run under a naive
+      random row split: R² came out higher there (0.43 vs. 0.36) than under the honest
+      client-holdout split, the direction you'd expect if leakage were inflating the numbers —
+      which is why the client-holdout result, not the leaky one, is what this paper reports.
+    </p>
+  </section>
+
+  <section id="results">
+    <div class="section-head"><span class="section-num">04</span><h2>Results</h2></div>
+    <p>
+      Both methods were scored the same way on the same held-out clients: <strong>Precision@50</strong>
+      — of the 50 pages each method ranks worst, how many are actually among the true worst 50
+      by <code>ctr_gap</code> in that test set.
+    </p>
+
+    <table>
+      <thead>
+        <tr><th>Method</th><th>Precision@50</th><th>R²</th><th>Spearman ρ</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Week-4 baseline rule</td><td>0.16</td><td>—</td><td>—</td></tr>
+        <tr class="model-row"><td>Random Forest (this paper)</td><td class="win">0.34</td><td>0.363</td><td>0.763</td></tr>
+      </tbody>
+    </table>
+
+    <div class="chart-card">
+      <img src="https://raw.githubusercontent.com/heyzara124-hub/flyrank-ml-internship/main/outputs/figures/model_vs_baseline.svg" alt="Bar chart comparing Precision at 50 between the baseline rule and the Random Forest model">
+      <div class="chart-caption">FIG. 1 — Precision@50 on held-out clients: baseline rule vs. Random Forest.</div>
+    </div>
+
+    <p>
+      The model's top-50 picks overlap with the true worst-performing pages roughly twice as
+      often as the baseline rule's do. The Spearman correlation (0.763) shows the model's
+      ranking tracks the true ranking well beyond just the top 50, not only at the cutoff.
+    </p>
+
+    <div class="chart-card">
+      <img src="https://raw.githubusercontent.com/heyzara124-hub/flyrank-ml-internship/main/outputs/figures/feature_importance.svg" alt="Horizontal bar chart of feature importances, led by sessions, impressions, and engagement rate">
+      <div class="chart-caption">FIG. 2 — What the model leans on most. Traffic and engagement signals dominate over content properties like word count.</div>
+    </div>
+
+    <p>
+      Session volume, log-transformed impressions, and engagement rate carry the most weight —
+      pages with more real activity simply give the model more signal to work with. Content
+      properties like word count and freshness matter, but far less. Error review showed most of
+      the model's false positives sit just outside the true cutoff — close calls, not wild
+      misses — while the pages it missed tend to have unusually low session counts for their
+      traffic level, a signal not fully captured by the current feature set.
+    </p>
+  </section>
+
+  <section id="limitations">
+    <div class="section-head"><span class="section-num">05</span><h2>Limitations &amp; honest framing</h2></div>
+    <ul class="limit-list">
+      <li><strong>Single snapshot.</strong> One 90-day window, no time-based validation yet — whether this holds across seasons is untested.</li>
+      <li><strong>A proxy, not ground truth.</strong> <code>ctr_gap</code> measures underperformance today relative to peers, not whether fixing a page will raise its CTR tomorrow.</li>
+      <li><strong>Correlational, not causal.</strong> The model finds association between page traits and the gap — it cannot tell a fixable snippet problem apart from a genuine intent mismatch.</li>
+      <li><strong>Small held-out test set.</strong> 821 test rows across a handful of clients after grouping; Precision@50 on that few pages is noisier than a larger test would give.</li>
+      <li><strong>Coverage gap.</strong> Only pages clearing the traffic floor are scored — about 18,000 lower-traffic pages in this snapshot are outside this queue entirely.</li>
+    </ul>
+    <div class="callout">
+      Every number in this paper should be read as <strong>observed, directional, decision-support</strong>
+      — a starting point for a human's next look, not a guarantee, and not a claim about how
+      Google's ranking algorithm works.
+    </div>
+  </section>
+
+  <section id="recommendations">
+    <div class="section-head"><span class="section-num">06</span><h2>Ranked recommendations</h2></div>
+    <p>
+      The final model was re-trained on all visible pages and used to score and rank the full
+      queue. Every flagged page carries a plain-language reason code, so a reviewer never sees a
+      bare number without knowing why it's on the list.
+    </p>
+    <div class="chart-card">
+      <img src="https://raw.githubusercontent.com/heyzara124-hub/flyrank-ml-internship/main/outputs/figures/action_mix.svg" alt="Bar chart showing the mix of recommended actions across the top 50 flagged pages">
+      <div class="chart-caption">FIG. 3 — Recommended actions across the top 50 flagged pages.</div>
+    </div>
+    <table>
+      <thead><tr><th>Reason code</th><th>Action</th><th>Share of top 50</th></tr></thead>
+      <tbody>
+        <tr><td><code>ctr_below_position_norm</code></td><td>Review meta title &amp; snippet</td><td>38 pages</td></tr>
+        <tr><td><code>stale_content_review</code></td><td>Refresh and republish</td><td>11 pages</td></tr>
+        <tr><td><code>thin_content_for_tier</code></td><td>Expand content depth</td><td>1 page</td></tr>
+      </tbody>
+    </table>
+    <p>
+      <strong>How an editor would use this tomorrow:</strong> open the top 20–50 rows, read the
+      reason code, and check the page against it — is the title actually weak, or is the intent
+      mismatched? Nothing here auto-publishes; a person reads and decides on every row. See the
+      capstone notebook for the full 12,023-row queue and methodology behind each reason code.
+    </p>
+  </section>
+
+  <section id="reproducibility">
+    <div class="section-head"><span class="section-num">07</span><h2>Reproducibility</h2></div>
+    <p>Every step in this paper is reproducible from a fresh clone of the repo:</p>
+    <div class="repro-box">
+<span class="comment"># clone and enter the repo</span><br>
+git clone https://github.com/heyzara124-hub/flyrank-ml-internship.git<br>
+cd flyrank-ml-internship<br><br>
+<span class="comment"># open any notebook in Colab, or run locally with:</span><br>
+pip install pandas numpy scikit-learn scipy matplotlib<br>
+jupyter notebook work/notebooks/capstone.ipynb
+    </div>
+    <p>Random seed <code>42</code> is fixed throughout, for the train/test split and the model itself.</p>
+    <ul class="link-list">
+      <li><a href="https://github.com/heyzara124-hub/flyrank-ml-internship/blob/main/work/notebooks/capstone.ipynb" target="_blank">Capstone notebook</a><span>full pipeline, start to finish</span></li>
+      <li><a href="https://github.com/heyzara124-hub/flyrank-ml-internship/blob/main/work/notebooks/w05_model.ipynb" target="_blank">Week 5 — model</a><span>training &amp; baseline comparison</span></li>
+      <li><a href="https://github.com/heyzara124-hub/flyrank-ml-internship/blob/main/work/notebooks/w06_validation_audit.ipynb" target="_blank">Week 6 — validation audit</a><span>leakage &amp; split honesty checks</span></li>
+      <li><a href="https://github.com/heyzara124-hub/flyrank-ml-internship/blob/main/work/notebooks/w07_action_playbook.ipynb" target="_blank">Week 7 — action playbook</a><span>reason codes &amp; recommendations</span></li>
+      <li><a href="https://github.com/heyzara124-hub/flyrank-ml-internship/blob/main/outputs/capstone_metrics.json" target="_blank">capstone_metrics.json</a><span>the numbers this page reports</span></li>
+    </ul>
+  </section>
+
+  <footer>
+    <div class="ack-card">
+      <p>Built on the FlyRank ML Internship dataset.</p>
+      <a href="https://flyrank.ai" target="_blank">flyrank.ai →</a>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
