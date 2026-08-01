@@ -1,0 +1,12 @@
+{
+  "queue_size": 12023,
+  "model_precision_at_50": 0.34,
+  "baseline_precision_at_50": 0.16,
+  "r2": 0.363,
+  "spearman_rho": 0.763,
+  "top50_action_mix": {
+    "review_meta_title_snippet": 38,
+    "refresh_and_republish": 11,
+    "expand_content_depth": 1
+  }
+}
